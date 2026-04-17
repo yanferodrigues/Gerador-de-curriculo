@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard — CurrículoPro{% endblock %}
+
+{% block extra_styles %}
+<style>
+  body { background:var(--bg-2) }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    height: 60px;
+    background: rgba(13,13,24,.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+  }
+  .topbar-inner {
+    max-width: var(--max-w); width: 100%; margin: 0 auto;
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .topbar-logo { font-family: var(--font-d); font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: .5rem }
+  .topbar-logo span { color: var(--gold) }
+  .user-pill {
+    display: flex; align-items: center; gap: .6rem;
+    padding: .35rem .75rem; border-radius: var(--r-f);
+    background: var(--surface); border: 1px solid var(--border);
+    font-size: .82rem; color: var(--text-2); cursor: pointer;
+    transition: var(--dur); position: relative;
+  }
+  .user-pill:hover { border-color: var(--border-h); color: var(--text) }
+  .user-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--gold-muted); border: 1px solid rgba(201,168,76,.3); display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-size: .7rem; font-weight: 700; color: var(--gold) }
+  .user-dropdown {
+    position: absolute; top: calc(100% + .5rem); right: 0;
+    background: var(--surface-2); border: 1px solid var(--border);
+    border-radius: var(--r-md); overflow: hidden;
+    box-shadow: var(--sh-lg); min-width: 160px;
+    display: none; z-index: 100;
+  }
+  .user-pill:hover .user-dropdown { display: block }
+  .dropdown-item { display: flex; align-items: center; gap: .6rem; padding: .7rem 1rem; font-size: .82rem; color: var(--text-2); transition: var(--dur); cursor: pointer }
+  .dropdown-item:hover { background: var(--surface-3); color: var(--text) }
+  .dropdown-item.danger { color: var(--danger) }
+
+  /* PAGE */
+  .page { max-width: var(--max-w); margin: 0 auto; padding: 2.5rem 2rem }
+
+  /* STATS */
+  .stats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap }
+  .stat-card { padding: 1.25rem 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); min-width: 140px }
+  .stat-num { font-family: var(--font-d); font-size: 2rem; font-weight: 700; color: var(--gold); line-height: 1 }
+  .stat-label { font-size: .78rem; color: var(--text-3); margin-top: .25rem }
+
+  /* RESUME CARD */
+  .resumes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem }
+  .resume-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden; transition: var(--dur);
+    animation: fadeUp .4s ease forwards;
+  }
+  .resume-card:hover { border-color: var(--border-h); box-shadow: var(--sh-gold); transform: translateY(-3px) }
+
+  .resume-thumb {
+    height: 170px;
+    background: #f4f4f0;
+    position: relative; overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .resume-thumb-preview {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 794px;
+    transform: translateX(-50%) scale(.36);
+    transform-origin: top center;
+    pointer-events: none;
+    background: #fff;
+  }
+  .resume-thumb-grad {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(244,244,240,.98));
+  }
+  .thumb-label {
+    position: absolute; bottom: 8px; left: 10px;
+    font-size: .68rem; color: var(--text-3);
+    background: rgba(0,0,0,.35); padding: 2px 7px; border-radius: var(--r-f);
+    border: 1px solid rgba(255,255,255,.1);
+  }
+
+  .resume-info { padding: 1.1rem 1.25rem }
+  .resume-name { font-family: var(--font-d); font-size: 1rem; font-weight: 600; margin-bottom: .25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis }
+  .resume-meta { font-size: .75rem; color: var(--text-3); margin-bottom: 1rem }
+  .resume-actions { display: flex; gap: .5rem; flex-wrap: wrap }
+
+  /* EMPTY STATE */
+  .empty {
+    grid-column: 1/-1;
+    text-align: center; padding: 5rem 2rem;
+  }
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .4 }
+  .empty-title { font-family: var(--font-d); font-size: 1.5rem; font-weight: 600; margin-bottom: .5rem }
+  .empty-sub { font-size: .9rem; color: var(--text-2); margin-bottom: 2rem }
+
+  /* SECTION HEADER */
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem }
+  .section-head h2 { font-family: var(--font-d); font-size: 1.35rem; font-weight: 700 }
+
+  @media(max-width:600px){
+    .stats{ flex-direction:column }
+    .topbar-inner{ padding:0 1rem }
+    .page{ padding:1.5rem 1rem }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="{% url 'resumes:index' %}" class="topbar-logo">
+      <div class="logo-dot"></div>
+      Currículo<span>Pro</span>
+    </a>
+    <div class="user-pill">
+      <div class="user-avatar">{{ request.user.first_name|first|upper }}</div>
+      <span>{{ request.user.get_full_name|default:request.user.username }}</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      <div class="user-dropdown">
+        <form method="POST" action="{% url 'accounts:logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="dropdown-item danger" style="width:100%;background:none;border:none;text-align:left;cursor:pointer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sair
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<main class="page">
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-num">{{ resumes|length }}</div>
+      <div class="stat-label">Currículos criados</div>
+    </div>
+  </div>
+
+  <!-- Resumes -->
+  <div class="section-head">
+    <h2>Meus currículos</h2>
+    <button class="btn btn-primary" id="create-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Novo currículo
+    </button>
+  </div>
+
+  <div class="resumes-grid">
+    {% for resume in resumes %}
+    <div class="resume-card">
+      <div class="resume-thumb">
+        <div class="resume-thumb-preview">
+          {% with p=resume.data.personal %}
+          {% if resume.template == 'minimal' %}
+          <div style="font-family:Arial,'Helvetica Neue',sans-serif;color:#222;background:#fff;padding:48px 56px;font-size:13px;line-height:1.55;box-sizing:border-box;">
+            <h1 style="margin:0 0 4px;font-size:28px;font-weight:700;color:#111;letter-spacing:-.5px">{{ p.name|default:"Sem nome" }}</h1>
+            {% if p.role %}<div style="margin:0 0 10px;font-size:13px;color:#666">{{ p.role }}</div>{% endif %}
+            <div style="font-size:11.5px;color:#999">
+              {{ p.email }}{% if p.email and p.phone %} | {% endif %}{{ p.phone }}{% if p.location %} | {{ p.location }}{% endif %}
+            </div>
+            <div style="margin-top:16px;height:2px;background:#111;margin-bottom:18px"></div>
+            {% if resume.data.summary %}<p style="margin:0;color:#444;line-height:1.65">{{ resume.data.summary|truncatechars:220 }}</p>{% endif %}
+          </div>
+          {% else %}
+          <div style="font-family:Georgia,'Times New Roman',serif;color:#1a1a2e;background:#fff;padding:44px 52px;font-size:13px;line-height:1.55;box-sizing:border-box;">
+            <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:20px;margin-bottom:18px;border-bottom:2.5px solid #C9A84C;">
+              {% if p.photo %}<img src="{{ p.photo }}" style="width:78px;height:78px;border-radius:50%;object-fit:cover;flex-shrink:0;border:3px solid #C9A84C">{% endif %}
+              <div style="flex:1">
+                <h1 style="margin:0 0 3px;font-size:27px;font-weight:700;color:#0a0a18;line-height:1.1">{{ p.name|default:"Sem nome" }}</h1>
+                {% if p.role %}<div style="margin:0 0 8px;font-size:11.5px;font-weight:600;color:#C9A84C;text-transform:uppercase;letter-spacing:.1em;font-family:Arial,sans-serif">{{ p.role }}</div>{% endif %}
+                <div style="font-family:Arial,sans-serif;font-size:11px;color:#666">
+                  {{ p.email }}{% if p.email and p.phone %} · {% endif %}{{ p.phone }}{% if p.location %} · {{ p.location }}{% endif %}
+                </div>
+              </div>
+            </div>
+            {% if resume.data.summary %}<p style="margin:0;color:#333;line-height:1.65;font-size:13px">{{ resume.data.summary|truncatechars:220 }}</p>{% endif %}
+          </div>
+          {% endif %}
+          {% endwith %}
+        </div>
+        <div class="resume-thumb-grad"></div>
+        <span class="thumb-label">{{ resume.template|capfirst }}</span>
+      </div>
+      <div class="resume-info">
+        <div class="resume-name">{{ resume.name }}</div>
+        <div class="resume-meta">Editado {{ resume.updated_at|timesince }} atrás</div>
+        <div class="resume-actions">
+          <a href="{% url 'resumes:builder_edit' pk=resume.pk %}" class="btn btn-ghost btn-sm">Editar</a>
+          <a href="{% url 'resumes:preview' pk=resume.pk %}" class="btn btn-ghost btn-sm">Preview</a>
+          <form method="POST" action="{% url 'resumes:delete_resume' pk=resume.pk %}" onsubmit="return confirm('Excluir este currículo?')">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-ghost btn-sm" style="color:var(--danger)">Excluir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="empty">
+      <div class="empty-icon">◈</div>
+      <h3 class="empty-title">Nenhum currículo ainda</h3>
+      <p class="empty-sub">Crie seu primeiro currículo e comece a se destacar.</p>
+      <button class="btn btn-primary" id="create-btn-empty">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Criar primeiro currículo
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+</main>
+
+<!-- CREATE MODAL -->
+<div class="overlay" id="create-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 style="font-family:var(--font-d);font-size:1.2rem;font-weight:600">Novo currículo</h3>
+      <button type="button" class="modal-close" onclick="closeModal('create-modal')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <form method="POST" action="{% url 'resumes:dashboard' %}">
+      {% csrf_token %}
+      <div class="field">
+        <label class="field-label" for="new-name">Nome do currículo</label>
+        <input class="field-input" type="text" id="new-name" name="name" placeholder="Ex: Currículo Dev Backend" maxlength="60" autofocus>
+        <div class="field-hint">Você pode renomear depois.</div>
+      </div>
+      <div style="display:flex;gap:.75rem;justify-content:flex-end;margin-top:1rem">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('create-modal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Criar e editar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.getElementById('create-btn').onclick = () => openModal('create-modal')
+  const emptyBtn = document.getElementById('create-btn-empty')
+  if (emptyBtn) emptyBtn.onclick = () => openModal('create-modal')
+</script>
+{% endblock %}

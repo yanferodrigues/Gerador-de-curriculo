@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro — CurrículoPro{% endblock %}
+
+{% block extra_styles %}
+<style>
+  body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:2rem }
+  .auth-bg {
+    position:fixed; inset:0; z-index:0;
+    background: radial-gradient(ellipse at 70% 30%, rgba(201,168,76,.05) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 80%, rgba(78,204,163,.03) 0%, transparent 50%), var(--bg);
+  }
+  .auth-wrap {
+    position:relative; z-index:1;
+    display:flex; gap:0;
+    max-width:900px; width:100%;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--r-2xl);
+    box-shadow:0 40px 100px rgba(0,0,0,.5); overflow:hidden;
+    animation: fadeUp .6s ease forwards;
+  }
+  .auth-side {
+    width:320px; flex-shrink:0;
+    background:linear-gradient(160deg,#0E0E20 0%,#14142A 100%);
+    border-right:1px solid var(--border);
+    padding:3rem 2.5rem;
+    display:flex; flex-direction:column; justify-content:space-between;
+    position:relative; overflow:hidden;
+  }
+  .auth-side::after {
+    content:'';
+    position:absolute; top:-60px; left:-60px;
+    width:240px; height:240px; border-radius:50%;
+    background:radial-gradient(circle, rgba(201,168,76,.06) 0%, transparent 70%);
+  }
+  .perks { display:flex; flex-direction:column; gap:.85rem; margin-top:2rem }
+  .perk  { display:flex; align-items:center; gap:.75rem; font-size:.83rem; color:var(--text-2) }
+  .perk-dot { width:20px; height:20px; border-radius:50%; background:var(--gold-muted); border:1px solid rgba(201,168,76,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.65rem; color:var(--gold) }
+  .auth-form-area { flex:1; padding:3rem 2.5rem; overflow-y:auto }
+  .auth-logo { font-family:var(--font-d); font-size:1.4rem; font-weight:700; display:flex; align-items:center; gap:.5rem; margin-bottom:2.5rem }
+  .auth-logo span { color:var(--gold) }
+  .auth-title { font-family:var(--font-d); font-size:1.75rem; font-weight:700; margin-bottom:.5rem }
+  .auth-subtitle { font-size:.875rem; color:var(--text-2); margin-bottom:2rem }
+  .auth-subtitle a { color:var(--gold); font-weight:500 }
+  .auth-subtitle a:hover { text-decoration:underline }
+  .pass-wrapper { position:relative }
+  .pass-toggle { position:absolute; right:.875rem; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text-3); cursor:pointer; padding:4px; display:flex; align-items:center; transition:var(--dur) }
+  .pass-toggle:hover { color:var(--text) }
+  .strength-bar { height:3px; border-radius:2px; background:var(--surface-3); margin-top:.4rem; overflow:hidden }
+  .strength-fill { height:100%; border-radius:2px; transition:width .3s ease,background .3s ease }
+  .strength-label { font-size:.72rem; margin-top:.25rem }
+  @media(max-width:700px){
+    .auth-side{ display:none }
+    .auth-form-area{ padding:2rem 1.5rem }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-bg"></div>
+
+<div class="auth-wrap">
+  <!-- SIDE PANEL -->
+  <div class="auth-side">
+    <div style="position:relative;z-index:1">
+      <div class="nav-logo" style="position:static;margin-bottom:2.5rem">
+        <div class="logo-dot"></div>
+        Currículo<span style="color:var(--gold)">Pro</span>
+      </div>
+      <p style="font-family:var(--font-d);font-size:1.15rem;color:var(--text-2);line-height:1.65;font-style:italic">
+        Comece a construir a carreira que você merece.
+      </p>
+      <div class="perks">
+        <div class="perk"><div class="perk-dot">✓</div>Currículo gerado em minutos</div>
+        <div class="perk"><div class="perk-dot">✓</div>PDF profissional para download</div>
+        <div class="perk"><div class="perk-dot">✓</div>Múltiplos templates</div>
+        <div class="perk"><div class="perk-dot">✓</div>Totalmente gratuito</div>
+      </div>
+    </div>
+    <div style="position:relative;z-index:1">
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--success)"></div>
+        <span style="font-size:.75rem;color:var(--text-3)">Conexão segura com o servidor</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM AREA -->
+  <div class="auth-form-area">
+    <div class="auth-logo">
+      <div class="logo-dot"></div>
+      Currículo<span>Pro</span>
+    </div>
+    <h1 class="auth-title">Criar conta</h1>
+    <p class="auth-subtitle">Já tem conta? <a href="{% url 'accounts:login' %}">Entrar</a></p>
+
+    <form id="register-form" method="POST" novalidate>
+      {% csrf_token %}
+      <div class="field">
+        <label class="field-label" for="name">Nome completo</label>
+        <input class="field-input" type="text" id="name" name="name" placeholder="Seu nome completo" autocomplete="name" required>
+        <div class="field-error" id="name-err"></div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="email">E-mail</label>
+        <input class="field-input" type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" required>
+        <div class="field-error" id="email-err"></div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="password">Senha</label>
+        <div class="pass-wrapper">
+          <input class="field-input" type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required style="padding-right:3rem">
+          <button type="button" class="pass-toggle" id="pass-toggle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="strength-bar"><div class="strength-fill" id="strength-fill" style="width:0"></div></div>
+        <p class="strength-label" id="strength-label" style="color:var(--text-3)"></p>
+        <div class="field-error" id="pass-err"></div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="confirm">Confirmar senha</label>
+        <div class="pass-wrapper">
+          <input class="field-input" type="password" id="confirm" name="confirm" placeholder="Repita a senha" autocomplete="new-password" required style="padding-right:3rem">
+          <button type="button" class="pass-toggle" id="confirm-toggle">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="field-error" id="confirm-err"></div>
+      </div>
+      {% if error %}
+      <div style="font-size:.82rem;color:var(--danger);margin-bottom:1rem">{{ error }}</div>
+      {% endif %}
+      <p style="font-size:.75rem;color:var(--text-3);margin-bottom:1.25rem">
+        Ao criar sua conta, você concorda com os <a href="#" style="color:var(--gold)">Termos de Uso</a>.
+      </p>
+      <button type="submit" class="btn btn-primary btn-lg" id="submit-btn" style="width:100%;justify-content:center">
+        Criar conta grátis
+      </button>
+    </form>
+    <div style="margin-top:1.5rem;text-align:center">
+      <a href="{% url 'resumes:index' %}" style="font-size:.8rem;color:var(--text-3)">← Voltar ao início</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

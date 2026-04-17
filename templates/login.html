@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrar — CurrículoPro{% endblock %}
+
+{% block extra_styles %}
+<style>
+  body { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:2rem }
+
+  .auth-bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse at 30% 40%, rgba(201,168,76,.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 70%, rgba(91,156,246,.04) 0%, transparent 50%),
+                var(--bg);
+  }
+
+  .auth-wrap {
+    position: relative; z-index: 1;
+    display: flex; gap: 0;
+    max-width: 900px; width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-2xl);
+    box-shadow: 0 40px 100px rgba(0,0,0,.5);
+    overflow: hidden;
+    animation: fadeUp .6s ease forwards;
+  }
+
+  .auth-side {
+    width: 340px; flex-shrink: 0;
+    background: linear-gradient(160deg, #0E0E20 0%, #14142A 100%);
+    border-right: 1px solid var(--border);
+    padding: 3rem 2.5rem;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .auth-side::before {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,.08) 0%, transparent 70%);
+  }
+  .auth-side-quote {
+    font-family: var(--font-d);
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--text-2);
+    line-height: 1.65;
+  }
+  .auth-side-quote span { color: var(--gold) }
+  .auth-side-author { font-size: .78rem; color: var(--text-3); margin-top: .75rem }
+
+  .auth-form-area {
+    flex: 1; padding: 3rem 2.5rem;
+    display: flex; flex-direction: column;
+  }
+  .auth-logo {
+    font-family: var(--font-d); font-size: 1.4rem; font-weight: 700;
+    display: flex; align-items: center; gap: .5rem; margin-bottom: 2.5rem;
+  }
+  .auth-logo span { color: var(--gold) }
+  .auth-title { font-family: var(--font-d); font-size: 1.75rem; font-weight: 700; margin-bottom: .5rem }
+  .auth-subtitle { font-size: .875rem; color: var(--text-2); margin-bottom: 2rem }
+  .auth-subtitle a { color: var(--gold); font-weight: 500 }
+  .auth-subtitle a:hover { text-decoration: underline }
+
+  .pass-wrapper { position: relative }
+  .pass-toggle {
+    position: absolute; right: .875rem; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: var(--text-3); cursor: pointer; padding: 4px;
+    display: flex; align-items: center; transition: var(--dur);
+  }
+  .pass-toggle:hover { color: var(--text) }
+
+  .auth-divider {
+    display: flex; align-items: center; gap: .75rem;
+    font-size: .75rem; color: var(--text-3); margin: 1.5rem 0;
+  }
+  .auth-divider::before,.auth-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .auth-footer-link {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: .825rem;
+    color: var(--text-3);
+  }
+  .auth-footer-link a { color: var(--gold); font-weight: 500 }
+  .auth-footer-link a:hover { text-decoration: underline }
+
+  @media(max-width:700px){
+    .auth-side{ display:none }
+    .auth-form-area{ padding:2rem 1.5rem }
+    .auth-wrap{ border-radius:var(--r-xl) }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-bg"></div>
+
+<div class="auth-wrap">
+  <!-- SIDE PANEL -->
+  <div class="auth-side">
+    <div>
+      <div class="nav-logo" style="position:static;margin-bottom:2.5rem">
+        <div class="logo-dot"></div>
+        Currículo<span style="color:var(--gold)">Pro</span>
+      </div>
+      <div class="auth-side-quote">
+        "Seu currículo é a sua <span>primeira impressão</span> — faça ela valer."
+      </div>
+      <p class="auth-side-author">— CurrículoPro</p>
+    </div>
+    <div>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--success)"></div>
+        <span style="font-size:.75rem;color:var(--text-3)">Conexão segura com o servidor</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORM AREA -->
+  <div class="auth-form-area">
+    <div class="auth-logo">
+      <div class="logo-dot"></div>
+      Currículo<span>Pro</span>
+    </div>
+    <h1 class="auth-title">Bem-vindo de volta</h1>
+    <p class="auth-subtitle">Não tem conta? <a href="{% url 'accounts:register' %}">Cadastre-se grátis</a></p>
+
+    <form id="login-form" method="POST" novalidate>
+      {% csrf_token %}
+      <div class="field">
+        <label class="field-label" for="email">E-mail</label>
+        <input class="field-input" type="email" id="email" name="email" placeholder="seu@email.com" autocomplete="email" required>
+        <div class="field-error" id="email-err"></div>
+      </div>
+      <div class="field">
+        <label class="field-label" for="password">Senha</label>
+        <div class="pass-wrapper">
+          <input class="field-input" type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required style="padding-right:3rem">
+          <button type="button" class="pass-toggle" id="pass-toggle" aria-label="Mostrar senha">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="eye-icon">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+        <div class="field-error" id="pass-err"></div>
+      </div>
+      {% if error %}
+      <div style="font-size:.82rem;color:var(--danger);margin-bottom:1rem">{{ error }}</div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary w-full btn-lg" id="submit-btn" style="width:100%;justify-content:center">
+        Entrar
+      </button>
+    </form>
+
+    <div class="auth-footer-link" style="margin-top:auto;padding-top:2rem">
+      <a href="{% url 'resumes:index' %}" style="color:var(--text-3);font-size:.8rem">← Voltar ao início</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

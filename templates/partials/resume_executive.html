@@ -1,0 +1,141 @@
+{% with d=resume.data p=resume.data.personal %}
+<div style="font-family:Georgia,'Times New Roman',serif;color:#1a1a2e;background:#fff;padding:44px 52px;min-height:1100px;font-size:13px;line-height:1.55;box-sizing:border-box;">
+
+  <!-- HEADER -->
+  <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:22px;margin-bottom:24px;border-bottom:2.5px solid #C9A84C;">
+    {% if p.photo %}
+    <img src="{{ p.photo }}" style="width:82px;height:82px;border-radius:50%;object-fit:cover;flex-shrink:0;border:3px solid #C9A84C;">
+    {% endif %}
+    <div style="flex:1">
+      <h1 style="margin:0 0 3px;font-size:27px;font-weight:700;color:#0a0a18;line-height:1.1">{{ p.name|default:"Seu Nome" }}</h1>
+      {% if p.role %}
+      <div style="margin:0 0 9px;font-size:11.5px;font-weight:600;color:#C9A84C;text-transform:uppercase;letter-spacing:.1em;font-family:Arial,sans-serif">{{ p.role }}</div>
+      {% endif %}
+      <div style="font-family:Arial,sans-serif;font-size:11px;color:#666;display:flex;flex-wrap:wrap;gap:8px 18px">
+        {% if p.email %}<span>{{ p.email }}</span>{% endif %}
+        {% if p.phone %}<span>{{ p.phone }}</span>{% endif %}
+        {% if p.location %}<span>{{ p.location }}</span>{% endif %}
+        {% if p.linkedin %}<span>{{ p.linkedin }}</span>{% endif %}
+        {% if p.portfolio %}<span>{{ p.portfolio }}</span>{% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  {% if d.summary %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Resumo Profissional</h2>
+    <p style="margin:0;color:#333;line-height:1.65">{{ d.summary }}</p>
+  </div>
+  {% endif %}
+
+  <!-- EXPERIENCE -->
+  {% if d.experience %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 10px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Experiência Profissional</h2>
+    {% for exp in d.experience %}
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1px">
+        <strong style="font-size:13.5px">{{ exp.role }}</strong>
+        <span style="font-size:11px;color:#888;font-family:Arial,sans-serif;white-space:nowrap">
+          {{ exp.start }}{% if exp.start %} – {% endif %}{% if exp.current %}Atual{% else %}{{ exp.end }}{% endif %}
+        </span>
+      </div>
+      <div style="font-size:12px;color:#C9A84C;font-style:italic;margin-bottom:4px">{{ exp.company }}</div>
+      {% if exp.desc %}<p style="margin:0;font-size:12px;color:#444;line-height:1.55">{{ exp.desc|linebreaksbr }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- EDUCATION -->
+  {% if d.education %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 10px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Formação Acadêmica</h2>
+    {% for edu in d.education %}
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+      <div>
+        <strong style="font-size:13px">{{ edu.degree }}</strong>
+        <div style="font-size:12px;color:#666;font-style:italic">{{ edu.school }}</div>
+      </div>
+      <span style="font-size:11px;color:#888;font-family:Arial,sans-serif;white-space:nowrap">{{ edu.start }}{% if edu.start and edu.end %} – {% endif %}{{ edu.end }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- SKILLS -->
+  {% if d.skills %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 10px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Habilidades Técnicas</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:7px">
+      {% for sk in d.skills %}
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px">
+        <span>{{ sk.name }}</span>
+        <div style="display:flex;gap:3px">
+          {% for n in "12345" %}<div style="width:8px;height:8px;border-radius:50%;{% if forloop.counter <= sk.level %}background:#C9A84C;{% else %}background:#e0d8c0;{% endif %}border:1px solid #C9A84C;-webkit-print-color-adjust:exact;print-color-adjust:exact"></div>{% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- SOFT SKILLS -->
+  {% if d.soft_skills %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Competências</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      {% for s in d.soft_skills %}
+      <span style="padding:3px 10px;background:#faf6ec;border:1px solid #e8dfc0;border-radius:20px;font-size:11.5px;color:#555;font-family:Arial,sans-serif">{{ s }}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- LANGUAGES -->
+  {% if d.languages %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Idiomas</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:16px">
+      {% for l in d.languages %}
+      <span style="font-size:12.5px"><strong>{{ l.lang }}</strong>{% if l.level %} <span style="color:#888;font-size:11px;font-family:Arial,sans-serif">— {{ l.level }}</span>{% endif %}</span>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- CERTIFICATIONS -->
+  {% if d.certifications %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 10px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Certificações e Cursos</h2>
+    {% for c in d.certifications %}
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+      <div>
+        <strong style="font-size:13px">{{ c.name }}</strong>
+        {% if c.issuer %}<span style="font-size:11px;color:#888;font-family:Arial,sans-serif"> — {{ c.issuer }}</span>{% endif %}
+      </div>
+      {% if c.date %}<span style="font-size:11px;color:#888;font-family:Arial,sans-serif;white-space:nowrap">{{ c.date }}</span>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- PROJECTS -->
+  {% if d.projects %}
+  <div style="margin-bottom:20px">
+    <h2 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 10px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:5px">Projetos</h2>
+    {% for proj in d.projects %}
+    <div style="margin-bottom:10px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline">
+        <strong style="font-size:13px">{{ proj.name }}</strong>
+        {% if proj.url %}<span style="font-size:11px;color:#888;font-family:Arial,sans-serif">{{ proj.url }}</span>{% endif %}
+      </div>
+      {% if proj.desc %}<p style="margin:3px 0 0;font-size:12px;color:#444;line-height:1.5">{{ proj.desc }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</div>
+{% endwith %}

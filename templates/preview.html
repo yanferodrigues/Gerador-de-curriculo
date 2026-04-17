@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}Preview — CurrículoPro{% endblock %}
+
+{% block extra_styles %}
+<style>
+  body { background: var(--bg-2); display:flex; flex-direction:column; min-height:100vh }
+
+  /* TOPBAR */
+  .preview-bar {
+    position:sticky; top:0; z-index:50;
+    height:58px;
+    background:rgba(8,8,15,.95);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:1rem;
+    padding:0 1.5rem;
+  }
+  .preview-bar-left  { display:flex; align-items:center; gap:1rem; flex:1 }
+  .preview-bar-right { display:flex; align-items:center; gap:.75rem }
+  .resume-name-display {
+    font-family:var(--font-d); font-size:.95rem; font-weight:600;
+    color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:220px;
+  }
+  .tpl-pill {
+    font-size:.68rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    padding:.25rem .7rem; border-radius:var(--r-f);
+    background:var(--gold-muted); border:1px solid rgba(201,168,76,.25); color:var(--gold);
+  }
+
+  /* TEMPLATE SWITCHER */
+  .tpl-switcher { display:flex; gap:.4rem; margin:0 1rem }
+  .tpl-btn {
+    padding:.3rem .85rem; border-radius:var(--r-f); font-size:.73rem; font-weight:500;
+    background:var(--surface); border:1px solid var(--border); color:var(--text-3);
+    cursor:pointer; transition:var(--dur);
+  }
+  .tpl-btn.active { background:var(--gold-muted); border-color:rgba(201,168,76,.3); color:var(--gold) }
+
+  /* MAIN */
+  .preview-main { flex:1; display:flex; gap:0; overflow:hidden }
+
+  /* RESUME AREA */
+  .resume-area { flex:1; overflow:auto; padding:2rem; display:flex; justify-content:center; align-items:flex-start }
+  .resume-wrapper {
+    width:794px;
+    box-shadow: 0 32px 80px rgba(0,0,0,.6);
+    border-radius:8px; overflow:hidden;
+    background:#fff;
+  }
+
+  /* SIDE PANEL */
+  .side-panel {
+    width:280px; flex-shrink:0;
+    border-left:1px solid var(--border);
+    background:rgba(13,13,25,.6);
+    backdrop-filter:blur(16px);
+    padding:1.5rem; overflow-y:auto;
+    display:flex; flex-direction:column; gap:1.25rem;
+  }
+  .panel-section { display:flex; flex-direction:column; gap:.6rem }
+  .panel-section-title { font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text-3) }
+
+  /* EXPORT CARD */
+  .export-card {
+    background:linear-gradient(135deg,rgba(201,168,76,.08) 0%,rgba(201,168,76,.04) 100%);
+    border:1px solid rgba(201,168,76,.2); border-radius:var(--r-lg); padding:1.25rem;
+  }
+  .export-card h4 { font-family:var(--font-d); font-size:1rem; font-weight:600; margin-bottom:.4rem }
+  .export-card p  { font-size:.78rem; color:var(--text-2); line-height:1.6; margin-bottom:1rem }
+  .export-btn { width:100%; justify-content:center }
+
+  /* INFO LIST */
+  .info-row { display:flex; justify-content:space-between; font-size:.78rem }
+  .info-row .label { color:var(--text-3) }
+  .info-row .val   { color:var(--text-2); font-weight:500; text-align:right; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+
+  /* CHECKLIST */
+  .check-item { display:flex; align-items:center; gap:.5rem; font-size:.78rem; color:var(--text-2) }
+  .check-item .dot { width:8px; height:8px; border-radius:50%; flex-shrink:0 }
+  .dot-ok { background:var(--success) }
+  .dot-warn { background:var(--gold) }
+  .dot-err  { background:var(--danger) }
+
+  @media(max-width:1100px){
+    .side-panel{ display:none }
+  }
+  @media(max-width:860px){
+    .resume-area{ padding:1rem }
+    .resume-wrapper{ width:100%; min-width:0 }
+  }
+  @media(max-width:600px){
+    .preview-bar{ padding:0 1rem }
+    .tpl-switcher{ display:none }
+  }
+  @media print {
+    body > *:not(.preview-main) { display: none !important; }
+    .preview-bar, .side-panel { display: none !important; }
+    .preview-main { display: block !important; }
+    .resume-area { padding: 0 !important; }
+    .resume-wrapper { box-shadow: none !important; border-radius: 0 !important; width: 100% !important; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- TOP BAR -->
+<div class="preview-bar">
+  <div class="preview-bar-left">
+    <a href="{% url 'resumes:builder_edit' pk=resume.pk %}" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      Editar
+    </a>
+    <div style="height:20px;width:1px;background:var(--border)"></div>
+    <span class="resume-name-display">{{ resume.name }}</span>
+    <span class="tpl-pill">{{ active_template|capfirst }}</span>
+    <div class="tpl-switcher">
+      <a href="?template=executive" class="tpl-btn {% if active_template == 'executive' %}active{% endif %}">Executive</a>
+      <a href="?template=minimal"   class="tpl-btn {% if active_template == 'minimal'   %}active{% endif %}">Minimal</a>
+    </div>
+  </div>
+  <div class="preview-bar-right">
+    <a href="{% url 'resumes:builder_edit' pk=resume.pk %}" class="btn btn-ghost btn-sm">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+      Continuar editando
+    </a>
+    <button class="btn btn-primary btn-sm" onclick="window.print()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exportar PDF
+    </button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="preview-main">
+
+  <!-- RESUME -->
+  <div class="resume-area">
+    <div class="resume-wrapper">
+      {% if active_template == 'minimal' %}
+        {% include 'partials/resume_minimal.html' %}
+      {% else %}
+        {% include 'partials/resume_executive.html' %}
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- SIDE PANEL -->
+  <div class="side-panel">
+    <div class="export-card">
+      <h4>Exportar PDF</h4>
+      <p>Gera um arquivo PDF profissional pronto para enviar para recrutadores.</p>
+      <button class="btn btn-primary btn-sm export-btn" onclick="window.print()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Baixar PDF
+      </button>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">Informações</div>
+      <div class="info-row"><span class="label">Nome</span><span class="val">{{ resume.data.personal.name|default:"—" }}</span></div>
+      <div class="info-row"><span class="label">Cargo</span><span class="val">{{ resume.data.personal.role|default:"—" }}</span></div>
+      <div class="info-row"><span class="label">Template</span><span class="val">{{ active_template|capfirst }}</span></div>
+      <div class="info-row"><span class="label">Experiências</span><span class="val">{{ resume.data.experience|length|default:"0" }}</span></div>
+      <div class="info-row"><span class="label">Habilidades</span><span class="val">{{ resume.data.skills|length|default:"0" }}</span></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">Checklist</div>
+      {% with d=resume.data p=resume.data.personal %}
+      <div class="check-item"><div class="dot {% if p.name and p.role %}dot-ok{% else %}dot-err{% endif %}"></div><span>Nome e cargo</span></div>
+      <div class="check-item"><div class="dot {% if p.email and p.phone %}dot-ok{% else %}dot-err{% endif %}"></div><span>E-mail e telefone</span></div>
+      <div class="check-item"><div class="dot {% if d.summary %}dot-ok{% else %}dot-err{% endif %}"></div><span>Resumo profissional</span></div>
+      <div class="check-item"><div class="dot {% if d.experience %}dot-ok{% else %}dot-err{% endif %}"></div><span>Experiência profissional</span></div>
+      <div class="check-item"><div class="dot {% if d.education %}dot-ok{% else %}dot-err{% endif %}"></div><span>Educação</span></div>
+      <div class="check-item"><div class="dot {% if d.skills %}dot-ok{% else %}dot-err{% endif %}"></div><span>Habilidades técnicas</span></div>
+      <div class="check-item"><div class="dot {% if d.languages %}dot-ok{% else %}dot-err{% endif %}"></div><span>Idiomas</span></div>
+      {% endwith %}
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">Dicas</div>
+      <p style="font-size:.75rem;color:var(--text-3);line-height:1.65">
+        ✦ Mantenha o resumo profissional em 2–4 frases objetivas.<br><br>
+        ✦ Liste habilidades relevantes para a vaga desejada.<br><br>
+        ✦ Descreva conquistas com números quando possível.
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
