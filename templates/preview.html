@@ -45,8 +45,9 @@
   .resume-area { flex:1; overflow:auto; padding:2rem; display:flex; justify-content:center; align-items:flex-start }
   .resume-wrapper {
     width:794px;
+    height:1123px;
     box-shadow: 0 32px 80px rgba(0,0,0,.6);
-    border-radius:8px; overflow:hidden;
+    border-radius:4px; overflow:hidden;
     background:#fff;
   }
 
@@ -94,12 +95,33 @@
     .preview-bar{ padding:0 1rem }
     .tpl-switcher{ display:none }
   }
+  @page { size: A4 portrait; margin: 0; }
+
   @media print {
+    html, body {
+      background: #fff !important;
+      height: auto !important;
+      min-height: 0 !important;
+      overflow: visible !important;
+    }
     body > *:not(.preview-main) { display: none !important; }
     .preview-bar, .side-panel { display: none !important; }
-    .preview-main { display: block !important; }
-    .resume-area { padding: 0 !important; }
-    .resume-wrapper { box-shadow: none !important; border-radius: 0 !important; width: 100% !important; }
+    .preview-main {
+      display: block !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    .resume-area {
+      padding: 0 !important;
+      height: auto !important;
+      overflow: visible !important;
+      display: block !important;
+    }
+    .resume-wrapper {
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      width: 100% !important;
+    }
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   }
 </style>

@@ -122,15 +122,23 @@
 
   /* ── FEATURES ── */
   .features { padding: 6rem 0; position: relative }
-  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 3.5rem;
+  }
   .feature-card {
-    padding: 2rem;
+    padding: 1.75rem;
     border-radius: var(--r-xl);
     background: var(--surface);
     border: 1px solid var(--border);
     transition: var(--dur);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
   .feature-card::before {
     content: '';
@@ -144,17 +152,30 @@
   .feature-card:hover { border-color: var(--border-h); transform: translateY(-4px); box-shadow: var(--sh-gold) }
   .feature-card:hover::before { opacity: 1 }
   .feature-icon {
-    width: 48px; height: 48px;
+    width: 46px; height: 46px;
     border-radius: var(--r-md);
     background: var(--gold-muted);
     border: 1px solid rgba(201,168,76,.2);
     display: flex; align-items: center; justify-content: center;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.1rem;
     color: var(--gold);
-    font-size: 1.25rem;
+    flex-shrink: 0;
   }
-  .feature-title { font-family: var(--font-d); font-size: 1.1rem; font-weight: 600; margin-bottom: .6rem }
-  .feature-desc  { font-size: .875rem; color: var(--text-2); line-height: 1.7 }
+  .feature-title { font-family: var(--font-d); font-size: 1.05rem; font-weight: 600; margin-bottom: .5rem }
+  .feature-desc  { font-size: .85rem; color: var(--text-2); line-height: 1.7; margin-bottom: 1rem }
+  .feature-list  { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .4rem; margin-top: auto }
+  .feature-list li {
+    display: flex; align-items: center; gap: .5rem;
+    font-size: .78rem; color: var(--text-3);
+  }
+  .feature-list li::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: .6;
+    flex-shrink: 0;
+  }
 
   /* ── HOW IT WORKS ── */
   .how { padding: 6rem 0; background: var(--bg-2) }
@@ -291,36 +312,92 @@
     <div class="section-label">Funcionalidades</div>
     <h2 class="t-heading fade-up">Tudo que você precisa,<br>em um só lugar.</h2>
     <div class="features-grid">
-      <div class="feature-card fade-up">
-        <div class="feature-icon">✦</div>
-        <h3 class="feature-title">Formulário intuitivo</h3>
-        <p class="feature-desc">Preencha suas informações em etapas simples — experiências, habilidades, idiomas e muito mais.</p>
+
+      <!-- 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+        </div>
+        <h3 class="feature-title">Editor em 8 etapas</h3>
+        <p class="feature-desc">Formulário guiado e estruturado que cobre todas as seções de um currículo completo, sem esquecer nada.</p>
+        <ul class="feature-list">
+          <li>Dados pessoais e foto de perfil</li>
+          <li>Resumo, experiências e formação</li>
+          <li>Certificações, projetos e idiomas</li>
+          <li>Habilidades técnicas com nível</li>
+        </ul>
       </div>
-      <div class="feature-card fade-up" style="transition-delay:.1s">
-        <div class="feature-icon">◈</div>
+
+      <!-- 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
         <h3 class="feature-title">Preview em tempo real</h3>
-        <p class="feature-desc">Veja seu currículo sendo montado enquanto você escreve, com atualização instantânea do layout.</p>
+        <p class="feature-desc">Cada campo que você preenche atualiza instantaneamente o painel lateral com o layout final do currículo.</p>
+        <ul class="feature-list">
+          <li>Atualização instantânea ao digitar</li>
+          <li>Troca de template sem perder dados</li>
+          <li>Preview completo antes de exportar</li>
+        </ul>
       </div>
-      <div class="feature-card fade-up" style="transition-delay:.2s">
-        <div class="feature-icon">⬡</div>
+
+      <!-- 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
         <h3 class="feature-title">Exportação em PDF</h3>
-        <p class="feature-desc">Gere um PDF profissional com tipografia refinada e layout impecável, pronto para enviar.</p>
+        <p class="feature-desc">Gere um PDF profissional em A4 com uma única página, tipografia refinada e cores preservadas fielmente.</p>
+        <ul class="feature-list">
+          <li>Formatação A4 perfeita ao imprimir</li>
+          <li>Cores e bordas temáticas no PDF</li>
+          <li>Sem marcas d'água, 100% seu</li>
+        </ul>
       </div>
-      <div class="feature-card fade-up" style="transition-delay:.05s">
-        <div class="feature-icon">⬕</div>
-        <h3 class="feature-title">Múltiplos templates</h3>
-        <p class="feature-desc">Escolha entre o template Executive, Minimal e Creative — cada um com identidade visual única.</p>
+
+      <!-- 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        <h3 class="feature-title">2 templates profissionais</h3>
+        <p class="feature-desc">Cada template tem identidade visual distinta, com borda decorativa temática e tipografia cuidadosamente escolhida.</p>
+        <ul class="feature-list">
+          <li>Executive — elegante com detalhes dourados</li>
+          <li>Minimal — clean com tipografia moderna</li>
+          <li>Alterne na hora sem reescrever nada</li>
+        </ul>
       </div>
-      <div class="feature-card fade-up" style="transition-delay:.15s">
-        <div class="feature-icon">◉</div>
-        <h3 class="feature-title">Gestão de currículos</h3>
-        <p class="feature-desc">Salve, edite e gerencie vários currículos — perfeito para diferentes vagas e perfis.</p>
+
+      <!-- 5 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3 class="feature-title">Vários currículos</h3>
+        <p class="feature-desc">Crie e gerencie múltiplos currículos no dashboard — ideal para adaptar seu perfil para cada vaga e empresa.</p>
+        <ul class="feature-list">
+          <li>Dashboard com thumbnails visuais</li>
+          <li>Auto-save enquanto você edita</li>
+          <li>Renomear, duplicar ou excluir</li>
+        </ul>
       </div>
-      <div class="feature-card fade-up" style="transition-delay:.25s">
-        <div class="feature-icon">◇</div>
-        <h3 class="feature-title">Dados seguros</h3>
-        <p class="feature-desc">Suas informações ficam salvas localmente no seu dispositivo. Privacidade total, sem servidores.</p>
+
+      <!-- 6 -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <h3 class="feature-title">Checklist de completude</h3>
+        <p class="feature-desc">Painel lateral no preview indica quais seções ainda estão faltando para o currículo ficar 100% completo.</p>
+        <ul class="feature-list">
+          <li>Indicadores visuais por seção</li>
+          <li>Dicas de como melhorar cada parte</li>
+          <li>Resumo de experiências e habilidades</li>
+        </ul>
       </div>
+
     </div>
   </div>
 </section>
