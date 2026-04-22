@@ -93,7 +93,7 @@
 
   .add-btn {
     width:100%; padding:.7rem; text-align:center;
-    border:1.5px dashed rgba(201,168,76,.25); border-radius:var(--r-md);
+    border:1.5px dashed rgba(74,144,217,.25); border-radius:var(--r-md);
     color:var(--gold); font-size:.825rem; font-weight:500; cursor:pointer;
     transition:var(--dur); background:transparent; margin-top:.5rem;
     display:flex; align-items:center; justify-content:center; gap:.4rem;
@@ -109,7 +109,7 @@
   /* Soft skills tags */
   .tags-input-wrap { display:flex; flex-wrap:wrap; gap:.4rem; padding:.6rem .8rem; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r-md); min-height:50px; cursor:text; transition:var(--dur) }
   .tags-input-wrap:focus-within { border-color:var(--gold) }
-  .tag-item { display:inline-flex; align-items:center; gap:.3rem; padding:.25rem .6rem; background:var(--gold-muted); border:1px solid rgba(201,168,76,.25); border-radius:var(--r-f); font-size:.75rem; color:var(--gold-l) }
+  .tag-item { display:inline-flex; align-items:center; gap:.3rem; padding:.25rem .6rem; background:var(--gold-muted); border:1px solid rgba(74,144,217,.25); border-radius:var(--r-f); font-size:.75rem; color:var(--gold-l) }
   .tag-remove { cursor:pointer; opacity:.6 }
   .tag-remove:hover { opacity:1 }
   .tags-text { border:none; background:none; color:var(--text); font-size:.85rem; outline:none; min-width:80px; flex:1; font-family:var(--font-b) }
@@ -117,7 +117,7 @@
   /* Photo upload */
   .photo-upload {
     width:90px; height:90px; border-radius:50%;
-    border:2px dashed rgba(201,168,76,.3); background:var(--surface-2);
+    border:2px dashed rgba(74,144,217,.3); background:var(--surface-2);
     display:flex; align-items:center; justify-content:center;
     cursor:pointer; transition:var(--dur); overflow:hidden; flex-shrink:0;
     position:relative;
@@ -157,7 +157,7 @@
     padding:.28rem .75rem; border-radius:var(--r-f); font-size:.72rem; font-weight:500;
     background:transparent; border:1px solid var(--border); color:var(--text-3); cursor:pointer; transition:var(--dur);
   }
-  .tpl-tab.active { background:var(--gold-muted); border-color:rgba(201,168,76,.3); color:var(--gold) }
+  .tpl-tab.active { background:var(--gold-muted); border-color:rgba(74,144,217,.3); color:var(--gold) }
 
   .preview-scroller { flex:1; overflow:auto; padding:1.5rem; display:flex; justify-content:center }
   .preview-scale {
@@ -735,20 +735,20 @@ function renderResume(d, tpl) { return tpl==='minimal' ? renderMinimal(d) : rend
 function renderExecutive(d) {
   const p = d.personal||{}
   const contact = [p.email,p.phone,p.location,p.linkedin,p.portfolio].filter(Boolean)
-  const sec = (t,b) => `<div style="margin-bottom:18px"><h2 style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1.5px solid #e8dfc0;padding-bottom:4px">${t}</h2>${b}</div>`
+  const sec = (t,b) => `<div style="margin-bottom:18px"><h2 style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1.5px solid #c5d8f0;padding-bottom:4px">${t}</h2>${b}</div>`
   return `<div style="font-family:Georgia,serif;color:#1a1a2e;background:#fff;padding:40px 46px;font-size:12.5px;line-height:1.5;box-sizing:border-box;">
-  <div style="display:flex;gap:18px;align-items:flex-start;padding-bottom:18px;margin-bottom:20px;border-bottom:2.5px solid #C9A84C;">
-    ${p.photo?`<img src="${p.photo}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #C9A84C">`:''}
+  <div style="display:flex;gap:18px;align-items:flex-start;padding-bottom:18px;margin-bottom:20px;border-bottom:2.5px solid #4A90D9;">
+    ${p.photo?`<img src="${p.photo}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #4A90D9">`:''}
     <div style="flex:1">
       <h1 style="margin:0 0 2px;font-size:24px;font-weight:700;color:#0a0a18">${esc(p.name)||'<span style="color:#ccc">Seu Nome</span>'}</h1>
-      ${p.role?`<div style="font-size:11px;font-weight:600;color:#C9A84C;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;font-family:Arial,sans-serif">${esc(p.role)}</div>`:''}
+      ${p.role?`<div style="font-size:11px;font-weight:600;color:#4A90D9;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;font-family:Arial,sans-serif">${esc(p.role)}</div>`:''}
       <div style="font-family:Arial,sans-serif;font-size:10.5px;color:#666;display:flex;flex-wrap:wrap;gap:6px 16px">${contact.map(c=>`<span>${esc(c)}</span>`).join('')}</div>
     </div></div>
   ${d.summary?sec('Resumo Profissional',`<p style="margin:0;color:#333;line-height:1.6">${esc(d.summary).replace(/\n/g,'<br>')}</p>`):''}
-  ${(d.experience||[]).length?sec('Experiência Profissional',(d.experience||[]).map(e=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between"><strong>${esc(e.role)}</strong><span style="font-size:10px;color:#888;font-family:Arial,sans-serif">${esc(e.start)}${e.start?' – ':''}${e.current?'Atual':esc(e.end)}</span></div><div style="font-size:11px;color:#C9A84C;font-style:italic;margin-bottom:3px">${esc(e.company)}</div>${e.desc?`<p style="margin:0;font-size:11.5px;color:#444">${esc(e.desc).replace(/\n/g,'<br>')}</p>`:''}</div>`).join('')):''}
+  ${(d.experience||[]).length?sec('Experiência Profissional',(d.experience||[]).map(e=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between"><strong>${esc(e.role)}</strong><span style="font-size:10px;color:#888;font-family:Arial,sans-serif">${esc(e.start)}${e.start?' – ':''}${e.current?'Atual':esc(e.end)}</span></div><div style="font-size:11px;color:#4A90D9;font-style:italic;margin-bottom:3px">${esc(e.company)}</div>${e.desc?`<p style="margin:0;font-size:11.5px;color:#444">${esc(e.desc).replace(/\n/g,'<br>')}</p>`:''}</div>`).join('')):''}
   ${(d.education||[]).length?sec('Formação Acadêmica',(d.education||[]).map(e=>`<div style="display:flex;justify-content:space-between;margin-bottom:7px"><div><strong>${esc(e.degree)}</strong><div style="font-size:11px;color:#666;font-style:italic">${esc(e.school)}</div></div><span style="font-size:10px;color:#888;font-family:Arial,sans-serif">${esc(e.start)}${e.start&&e.end?' – ':''}${esc(e.end)}</span></div>`).join('')):''}
-  ${(d.skills||[]).length?sec('Habilidades',`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:5px">${(d.skills||[]).map(s=>`<div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px"><span>${esc(s.name)}</span><div style="display:flex;gap:2px">${[1,2,3,4,5].map(n=>`<div style="width:7px;height:7px;border-radius:50%;background:${n<=(s.level||0)?'#C9A84C':'#e0d8c0'};border:1px solid #C9A84C"></div>`).join('')}</div></div>`).join('')}</div>`):''}
-  ${(d.soft_skills||[]).length?sec('Competências',`<div style="display:flex;flex-wrap:wrap;gap:5px">${(d.soft_skills||[]).map(s=>`<span style="padding:2px 9px;background:#faf6ec;border:1px solid #e8dfc0;border-radius:20px;font-size:11px;color:#555;font-family:Arial,sans-serif">${esc(s)}</span>`).join('')}</div>`):''}
+  ${(d.skills||[]).length?sec('Habilidades',`<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:5px">${(d.skills||[]).map(s=>`<div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px"><span>${esc(s.name)}</span><div style="display:flex;gap:2px">${[1,2,3,4,5].map(n=>`<div style="width:7px;height:7px;border-radius:50%;background:${n<=(s.level||0)?'#4A90D9':'#c5d8f0'};border:1px solid #4A90D9"></div>`).join('')}</div></div>`).join('')}</div>`):''}
+  ${(d.soft_skills||[]).length?sec('Competências',`<div style="display:flex;flex-wrap:wrap;gap:5px">${(d.soft_skills||[]).map(s=>`<span style="padding:2px 9px;background:#f0f5fc;border:1px solid #c5d8f0;border-radius:20px;font-size:11px;color:#555;font-family:Arial,sans-serif">${esc(s)}</span>`).join('')}</div>`):''}
   ${(d.languages||[]).length?sec('Idiomas',`<div style="display:flex;flex-wrap:wrap;gap:14px">${(d.languages||[]).map(l=>`<span style="font-size:12px"><strong>${esc(l.lang)}</strong>${l.level?` <span style="color:#888;font-size:10.5px;font-family:Arial,sans-serif">— ${esc(l.level)}</span>`:''}</span>`).join('')}</div>`):''}
   ${(d.certifications||[]).length?sec('Certificações',(d.certifications||[]).map(c=>`<div style="display:flex;justify-content:space-between;margin-bottom:6px"><div><strong>${esc(c.name)}</strong>${c.issuer?`<span style="font-size:10.5px;color:#888;font-family:Arial,sans-serif"> — ${esc(c.issuer)}</span>`:''}</div>${c.date?`<span style="font-size:10.5px;color:#888;font-family:Arial,sans-serif">${esc(c.date)}</span>`:''}</div>`).join('')):''}
   ${(d.projects||[]).length?sec('Projetos',(d.projects||[]).map(p=>`<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between"><strong>${esc(p.name)}</strong>${p.url?`<span style="font-size:10.5px;color:#888;font-family:Arial,sans-serif">${esc(p.url)}</span>`:''}</div>${p.desc?`<p style="margin:2px 0 0;font-size:11.5px;color:#444">${esc(p.desc)}</p>`:''}</div>`).join('')):''}

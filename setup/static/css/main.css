@@ -12,13 +12,13 @@
   --surface:     #131325;
   --surface-2:   #1A1A30;
   --surface-3:   #22223A;
-  --border:      rgba(201,168,76,0.10);
-  --border-h:    rgba(201,168,76,0.28);
+  --border:      rgba(74,144,217,0.10);
+  --border-h:    rgba(74,144,217,0.28);
 
-  --gold:        #C9A84C;
-  --gold-l:      #E4C76B;
-  --gold-d:      #8A6B28;
-  --gold-muted:  rgba(201,168,76,0.10);
+  --gold:        #4A90D9;
+  --gold-l:      #7BB8E8;
+  --gold-d:      #2C6FAB;
+  --gold-muted:  rgba(74,144,217,0.10);
 
   --text:        #F0EDE8;
   --text-2:      #A8A5A0;
@@ -41,7 +41,7 @@
   --sh-sm:   0 2px 8px rgba(0,0,0,.35);
   --sh-md:   0 8px 32px rgba(0,0,0,.45);
   --sh-lg:   0 20px 60px rgba(0,0,0,.55);
-  --sh-gold: 0 0 40px rgba(201,168,76,.10);
+  --sh-gold: 0 0 40px rgba(74,144,217,.10);
 
   --dur: .3s cubic-bezier(.4,0,.2,1);
   --dur-s: .6s cubic-bezier(.4,0,.2,1);
@@ -115,9 +115,9 @@ h1,h2,h3,h4{line-height:1.2}
 .btn-primary{
   background:linear-gradient(135deg,var(--gold),var(--gold-l));
   color:#0A0A12;font-weight:700;
-  box-shadow:0 4px 24px rgba(201,168,76,.28);
+  box-shadow:0 4px 24px rgba(74,144,217,.28);
 }
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(201,168,76,.42)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(74,144,217,.42)}
 .btn-primary:active{transform:translateY(0)}
 
 .btn-ghost{
@@ -128,7 +128,7 @@ h1,h2,h3,h4{line-height:1.2}
 
 .btn-outline-gold{
   background:transparent;color:var(--gold);
-  border:1px solid rgba(201,168,76,.4);
+  border:1px solid rgba(74,144,217,.4);
 }
 .btn-outline-gold:hover{background:var(--gold-muted);border-color:var(--gold)}
 
@@ -163,7 +163,7 @@ h1,h2,h3,h4{line-height:1.2}
   transition:var(--dur);
 }
 .field-input::placeholder{color:var(--text-3)}
-.field-input:focus{border-color:var(--gold);background:var(--surface-3);box-shadow:0 0 0 3px rgba(201,168,76,.08)}
+.field-input:focus{border-color:var(--gold);background:var(--surface-3);box-shadow:0 0 0 3px rgba(74,144,217,.08)}
 .field-input:focus ~ .field-label,.field-input:not(:placeholder-shown) ~ .field-label{color:var(--gold)}
 .field-input.error{border-color:var(--danger)}
 textarea.field-input{resize:vertical;min-height:110px}
@@ -194,7 +194,7 @@ select.field-input{appearance:none;cursor:pointer}
   font-size:.75rem;font-weight:500;
 }
 .badge-default{background:var(--surface-2);border:1px solid var(--border);color:var(--text-2)}
-.badge-gold{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold-l)}
+.badge-gold{background:rgba(74,144,217,.1);border:1px solid rgba(74,144,217,.25);color:var(--gold-l)}
 .badge-success{background:rgba(78,204,163,.1);border:1px solid rgba(78,204,163,.25);color:var(--success)}
 
 /* === NAVIGATION === */

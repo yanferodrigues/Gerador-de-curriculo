@@ -31,15 +31,18 @@
     transition: var(--dur); position: relative;
   }
   .user-pill:hover { border-color: var(--border-h); color: var(--text) }
-  .user-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--gold-muted); border: 1px solid rgba(201,168,76,.3); display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-size: .7rem; font-weight: 700; color: var(--gold) }
+  .user-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--gold-muted); border: 1px solid rgba(74,144,217,.3); display: flex; align-items: center; justify-content: center; font-family: var(--font-d); font-size: .7rem; font-weight: 700; color: var(--gold) }
   .user-dropdown {
-    position: absolute; top: calc(100% + .5rem); right: 0;
+    position: absolute; top: 100%; right: 0;
+    padding-top: .5rem;
+    display: none; z-index: 100;
+  }
+  .user-dropdown-inner {
     background: var(--surface-2); border: 1px solid var(--border);
     border-radius: var(--r-md); overflow: hidden;
     box-shadow: var(--sh-lg); min-width: 160px;
-    display: none; z-index: 100;
   }
-  .user-pill:hover .user-dropdown { display: block }
+  .user-dropdown.open { display: block }
   .dropdown-item { display: flex; align-items: center; gap: .6rem; padding: .7rem 1rem; font-size: .82rem; color: var(--text-2); transition: var(--dur); cursor: pointer }
   .dropdown-item:hover { background: var(--surface-3); color: var(--text) }
   .dropdown-item.danger { color: var(--danger) }
@@ -129,14 +132,16 @@
       <div class="user-avatar">{{ request.user.first_name|first|upper }}</div>
       <span>{{ request.user.get_full_name|default:request.user.username }}</span>
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      <div class="user-dropdown">
-        <form method="POST" action="{% url 'accounts:logout' %}">
-          {% csrf_token %}
-          <button type="submit" class="dropdown-item danger" style="width:100%;background:none;border:none;text-align:left;cursor:pointer">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Sair
-          </button>
-        </form>
+      <div class="user-dropdown" id="user-dropdown">
+        <div class="user-dropdown-inner">
+          <form method="POST" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="dropdown-item danger" style="width:100%;background:none;border:none;text-align:left;cursor:pointer">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Sair
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -179,11 +184,11 @@
           </div>
           {% else %}
           <div style="font-family:Georgia,'Times New Roman',serif;color:#1a1a2e;background:#fff;padding:44px 52px;font-size:13px;line-height:1.55;box-sizing:border-box;">
-            <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:20px;margin-bottom:18px;border-bottom:2.5px solid #C9A84C;">
-              {% if p.photo %}<img src="{{ p.photo }}" style="width:78px;height:78px;border-radius:50%;object-fit:cover;flex-shrink:0;border:3px solid #C9A84C">{% endif %}
+            <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:20px;margin-bottom:18px;border-bottom:2.5px solid #4A90D9;">
+              {% if p.photo %}<img src="{{ p.photo }}" style="width:78px;height:78px;border-radius:50%;object-fit:cover;flex-shrink:0;border:3px solid #4A90D9">{% endif %}
               <div style="flex:1">
                 <h1 style="margin:0 0 3px;font-size:27px;font-weight:700;color:#0a0a18;line-height:1.1">{{ p.name|default:"Sem nome" }}</h1>
-                {% if p.role %}<div style="margin:0 0 8px;font-size:11.5px;font-weight:600;color:#C9A84C;text-transform:uppercase;letter-spacing:.1em;font-family:Arial,sans-serif">{{ p.role }}</div>{% endif %}
+                {% if p.role %}<div style="margin:0 0 8px;font-size:11.5px;font-weight:600;color:#4A90D9;text-transform:uppercase;letter-spacing:.1em;font-family:Arial,sans-serif">{{ p.role }}</div>{% endif %}
                 <div style="font-family:Arial,sans-serif;font-size:11px;color:#666">
                   {{ p.email }}{% if p.email and p.phone %} · {% endif %}{{ p.phone }}{% if p.location %} · {{ p.location }}{% endif %}
                 </div>
@@ -254,5 +259,10 @@
   document.getElementById('create-btn').onclick = () => openModal('create-modal')
   const emptyBtn = document.getElementById('create-btn-empty')
   if (emptyBtn) emptyBtn.onclick = () => openModal('create-modal')
+
+  const pill     = document.querySelector('.user-pill')
+  const dropdown = document.getElementById('user-dropdown')
+  pill.addEventListener('click', e => { e.stopPropagation(); dropdown.classList.toggle('open') })
+  document.addEventListener('click', () => dropdown.classList.remove('open'))
 </script>
 {% endblock %}

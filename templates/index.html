@@ -27,8 +27,8 @@
     gap: .5rem;
     padding: .35rem 1rem;
     border-radius: var(--r-f);
-    background: rgba(201,168,76,.08);
-    border: 1px solid rgba(201,168,76,.22);
+    background: rgba(74,144,217,.08);
+    border: 1px solid rgba(74,144,217,.22);
     font-size: .72rem;
     font-weight: 700;
     letter-spacing: .12em;
@@ -109,6 +109,44 @@
     background: linear-gradient(to bottom, var(--gold), transparent);
   }
 
+  /* ── HERO ORBS ── */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    will-change: transform;
+    animation: orbPulse 8s ease-in-out infinite;
+  }
+  .orb-1 {
+    width: 520px; height: 520px;
+    background: radial-gradient(circle, rgba(74,144,217,.20) 0%, transparent 70%);
+    top: -120px; left: -100px;
+    animation-delay: 0s;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(123,184,232,.15) 0%, transparent 70%);
+    top: 30%; right: -80px;
+    animation-delay: -3s;
+  }
+  .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(44,111,171,.18) 0%, transparent 70%);
+    bottom: 10%; left: 35%;
+    animation-delay: -5.5s;
+  }
+  @keyframes orbPulse {
+    0%, 100% { opacity: .7;  scale: 1 }
+    50%       { opacity: .95; scale: 1.07 }
+  }
+
   /* ── NOISE OVERLAY ── */
   .noise {
     position: fixed;
@@ -155,7 +193,7 @@
     width: 46px; height: 46px;
     border-radius: var(--r-md);
     background: var(--gold-muted);
-    border: 1px solid rgba(201,168,76,.2);
+    border: 1px solid rgba(74,144,217,.2);
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 1.1rem;
     color: var(--gold);
@@ -202,7 +240,7 @@
     font-weight: 700;
     color: var(--gold);
     position: relative; z-index: 1;
-    box-shadow: 0 0 24px rgba(201,168,76,.2);
+    box-shadow: 0 0 24px rgba(74,144,217,.2);
   }
   .step-title { font-family: var(--font-d); font-size: 1.1rem; font-weight: 600; margin-bottom: .5rem }
   .step-desc  { font-size: .875rem; color: var(--text-2); line-height: 1.7 }
@@ -227,7 +265,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at top, rgba(201,168,76,.06) 0%, transparent 65%);
+    background: radial-gradient(ellipse at top, rgba(74,144,217,.06) 0%, transparent 65%);
   }
   .cta-box > * { position: relative; z-index: 1 }
   .cta-title { font-family: var(--font-d); font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; margin-bottom: 1rem }
@@ -282,6 +320,11 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
   <div class="hero-content">
     <div class="hero-badge" id="hero-badge">
       <span>✦</span> Novo — 3 templates profissionais
@@ -466,17 +509,31 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.4/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.4/dist/ScrollTrigger.min.js"></script>
-<script src="{% static 'assets/js/three-bg.js' %}"></script>
 <script>
   /* Nav scroll */
   initNavScroll('nav')
   initFadeUps()
 
-  /* Three.js */
-  initThreeBg('hero')
+  /* Orb mouse parallax */
+  const hero = document.getElementById('hero')
+  const orbData = [
+    { el: document.querySelector('.orb-1'), sx: .04,  sy: .03  },
+    { el: document.querySelector('.orb-2'), sx: -.06, sy: -.04 },
+    { el: document.querySelector('.orb-3'), sx: .05,  sy: -.05 },
+  ]
+  hero.addEventListener('mousemove', e => {
+    const r  = hero.getBoundingClientRect()
+    const dx = e.clientX - (r.left + r.width  / 2)
+    const dy = e.clientY - (r.top  + r.height / 2)
+    orbData.forEach(({ el, sx, sy }) => {
+      gsap.to(el, { x: dx * sx, y: dy * sy, duration: 1.4, ease: 'power2.out', overwrite: 'auto' })
+    })
+  })
+  hero.addEventListener('mouseleave', () => {
+    orbData.forEach(({ el }) => gsap.to(el, { x: 0, y: 0, duration: 2.5, ease: 'power2.out' }))
+  })
 
   /* GSAP hero entrance */
   if (typeof gsap !== 'undefined') {

@@ -1,23 +1,23 @@
 {% with d=resume.data p=resume.data.personal %}
 <div style="font-family:Georgia,'Times New Roman',serif;color:#1a1a2e;background:#fff;width:794px;height:1123px;overflow:hidden;font-size:12.5px;line-height:1.5;box-sizing:border-box;position:relative;padding:38px 48px;">
 
-  <!-- Decorative gold border frame -->
-  <div style="position:absolute;inset:14px;border:1.5px solid #C9A84C;pointer-events:none;"></div>
+  <!-- Decorative blue border frame -->
+  <div style="position:absolute;inset:14px;border:1.5px solid #2b5d93;pointer-events:none;"></div>
   <!-- Corner accents -->
-  <div style="position:absolute;top:10px;left:10px;width:12px;height:12px;border-top:3px solid #C9A84C;border-left:3px solid #C9A84C;pointer-events:none;"></div>
-  <div style="position:absolute;top:10px;right:10px;width:12px;height:12px;border-top:3px solid #C9A84C;border-right:3px solid #C9A84C;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:10px;left:10px;width:12px;height:12px;border-bottom:3px solid #C9A84C;border-left:3px solid #C9A84C;pointer-events:none;"></div>
-  <div style="position:absolute;bottom:10px;right:10px;width:12px;height:12px;border-bottom:3px solid #C9A84C;border-right:3px solid #C9A84C;pointer-events:none;"></div>
+  <div style="position:absolute;top:10px;left:10px;width:12px;height:12px;border-top:3px solid #2b5d93;border-left:3px solid #2b5d93;pointer-events:none;"></div>
+  <div style="position:absolute;top:10px;right:10px;width:12px;height:12px;border-top:3px solid #2b5d93;border-right:3px solid #2b5d93;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:10px;left:10px;width:12px;height:12px;border-bottom:3px solid #2b5d93;border-left:3px solid #2b5d93;pointer-events:none;"></div>
+  <div style="position:absolute;bottom:10px;right:10px;width:12px;height:12px;border-bottom:3px solid #2b5d93;border-right:3px solid #2b5d93;pointer-events:none;"></div>
 
   <!-- HEADER -->
-  <div style="display:flex;gap:18px;align-items:flex-start;padding-bottom:16px;margin-bottom:16px;border-bottom:2px solid #C9A84C;">
+  <div style="display:flex;gap:18px;align-items:flex-start;padding-bottom:16px;margin-bottom:16px;border-bottom:2px solid #2b5d93;">
     {% if p.photo %}
-    <img src="{{ p.photo }}" style="width:74px;height:74px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2.5px solid #C9A84C;">
+    <img src="{{ p.photo }}" style="width:74px;height:74px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2.5px solid #2b5d93;">
     {% endif %}
     <div style="flex:1">
       <h1 style="margin:0 0 3px;font-size:24px;font-weight:700;color:#0a0a18;line-height:1.1">{{ p.name|default:"Seu Nome" }}</h1>
       {% if p.role %}
-      <div style="margin:0 0 7px;font-size:10.5px;font-weight:700;color:#C9A84C;text-transform:uppercase;letter-spacing:.12em;font-family:Arial,sans-serif">{{ p.role }}</div>
+      <div style="margin:0 0 7px;font-size:10.5px;font-weight:700;color:#2b5d93;text-transform:uppercase;letter-spacing:.12em;font-family:Arial,sans-serif">{{ p.role }}</div>
       {% endif %}
       <div style="font-family:Arial,sans-serif;font-size:10.5px;color:#666;display:flex;flex-wrap:wrap;gap:6px 16px">
         {% if p.email %}<span>{{ p.email }}</span>{% endif %}
@@ -32,7 +32,7 @@
   <!-- SUMMARY -->
   {% if d.summary %}
   <div style="margin-bottom:14px">
-    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 6px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Resumo Profissional</h2>
+    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 6px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Resumo Profissional</h2>
     <p style="margin:0;color:#333;line-height:1.6;font-size:12px">{{ d.summary }}</p>
   </div>
   {% endif %}
@@ -40,16 +40,16 @@
   <!-- EXPERIENCE -->
   {% if d.experience %}
   <div style="margin-bottom:14px">
-    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Experiência Profissional</h2>
+    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Experiência Profissional</h2>
     {% for exp in d.experience %}
     <div style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1px">
+      <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:1px">
         <strong style="font-size:12.5px">{{ exp.role }}</strong>
         <span style="font-size:10px;color:#888;font-family:Arial,sans-serif;white-space:nowrap">
           {{ exp.start }}{% if exp.start %} – {% endif %}{% if exp.current %}Atual{% else %}{{ exp.end }}{% endif %}
         </span>
       </div>
-      <div style="font-size:11px;color:#C9A84C;font-style:italic;margin-bottom:3px">{{ exp.company }}</div>
+      <div style="font-size:11px;color:#2b5d93;font-style:italic;margin-bottom:3px">{{ exp.company }}</div>
       {% if exp.desc %}<p style="margin:0;font-size:11px;color:#444;line-height:1.5">{{ exp.desc|linebreaksbr }}</p>{% endif %}
     </div>
     {% endfor %}
@@ -59,9 +59,9 @@
   <!-- EDUCATION -->
   {% if d.education %}
   <div style="margin-bottom:14px">
-    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Formação Acadêmica</h2>
+    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Formação Acadêmica</h2>
     {% for edu in d.education %}
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px">
+    <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px">
       <div>
         <strong style="font-size:12px">{{ edu.degree }}</strong>
         <div style="font-size:11px;color:#666;font-style:italic">{{ edu.school }}</div>
@@ -77,12 +77,12 @@
   <div style="display:grid;grid-template-columns:{% if d.skills and d.soft_skills %}1fr 1fr{% else %}1fr{% endif %};gap:16px;margin-bottom:14px">
     {% if d.skills %}
     <div>
-      <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Habilidades Técnicas</h2>
+      <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Habilidades Técnicas</h2>
       {% for sk in d.skills %}
       <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;margin-bottom:4px">
         <span>{{ sk.name }}</span>
         <div style="display:flex;gap:3px">
-          {% for n in "12345" %}<div style="width:7px;height:7px;border-radius:50%;{% if forloop.counter <= sk.level %}background:#C9A84C;{% else %}background:#e0d8c0;{% endif %}border:1px solid #C9A84C;-webkit-print-color-adjust:exact;print-color-adjust:exact"></div>{% endfor %}
+          {% for n in "12345" %}<div style="width:7px;height:7px;border-radius:50%;{% if forloop.counter <= sk.level %}background:#2b5d93;{% else %}background:#c5d8f0;{% endif %}border:1px solid #2b5d93;-webkit-print-color-adjust:exact;print-color-adjust:exact"></div>{% endfor %}
         </div>
       </div>
       {% endfor %}
@@ -90,10 +90,10 @@
     {% endif %}
     {% if d.soft_skills %}
     <div>
-      <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Competências</h2>
+      <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Competências</h2>
       <div style="display:flex;flex-wrap:wrap;gap:5px">
         {% for s in d.soft_skills %}
-        <span style="padding:2px 8px;background:#faf6ec;border:1px solid #e8dfc0;border-radius:20px;font-size:10.5px;color:#555;font-family:Arial,sans-serif">{{ s }}</span>
+        <span style="padding:2px 8px;background:#f0f5fc;border:1px solid #c5d8f0;border-radius:20px;font-size:10.5px;color:#555;font-family:Arial,sans-serif">{{ s }}</span>
         {% endfor %}
       </div>
     </div>
@@ -104,7 +104,7 @@
   <!-- LANGUAGES -->
   {% if d.languages %}
   <div style="margin-bottom:14px">
-    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Idiomas</h2>
+    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Idiomas</h2>
     <div style="display:flex;flex-wrap:wrap;gap:18px">
       {% for l in d.languages %}
       <span style="font-size:12px"><strong>{{ l.lang }}</strong>{% if l.level %} <span style="color:#888;font-size:10.5px;font-family:Arial,sans-serif">— {{ l.level }}</span>{% endif %}</span>
@@ -116,9 +116,9 @@
   <!-- CERTIFICATIONS -->
   {% if d.certifications %}
   <div style="margin-bottom:14px">
-    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Certificações e Cursos</h2>
+    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Certificações e Cursos</h2>
     {% for c in d.certifications %}
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+    <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:5px">
       <div>
         <strong style="font-size:12px">{{ c.name }}</strong>
         {% if c.issuer %}<span style="font-size:10.5px;color:#888;font-family:Arial,sans-serif"> — {{ c.issuer }}</span>{% endif %}
@@ -132,7 +132,7 @@
   <!-- PROJECTS -->
   {% if d.projects %}
   <div style="margin-bottom:14px">
-    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#b8922a;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #e8dfc0;padding-bottom:4px">Projetos</h2>
+    <h2 style="font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#2C6FAB;margin:0 0 8px;font-family:Arial,sans-serif;border-bottom:1px solid #c5d8f0;padding-bottom:4px">Projetos</h2>
     {% for proj in d.projects %}
     <div style="margin-bottom:7px">
       <div style="display:flex;justify-content:space-between;align-items:baseline">
